@@ -1,9 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from .forms import VideoUploadForm
+from .models import Video
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, world. You're at the teacher index.")
+    videos = Video.objects.filter(teacher=request.user) if request.user.is_authenticated else None
+    return render(request, 'teacher/index.html', {'videos': videos})
 
 
 # teacher/views.py
@@ -22,7 +25,7 @@ def signup(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Registration successful.')
-            return redirect('index')
+            return redirect('teacher:index')
         messages.error(request, 'Unsuccessful registration. Invalid information.')
     else:
         form = TeacherSignUpForm()
@@ -38,7 +41,7 @@ def signin(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return redirect('index')
+                return redirect('teacher:index')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -50,4 +53,21 @@ def signin(request):
 def signout(request):
     logout(request)
     messages.info(request, "You have successfully logged out.") 
-    return redirect('index')
+    return redirect('teacher:index')
+
+
+def upload_video(request):
+    if not request.user.is_authenticated:
+        return redirect('teacher:signin')
+        
+    if request.method == 'POST':
+        form = VideoUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            video = form.save(commit=False)
+            video.teacher = request.user
+            video.save()
+            messages.success(request, 'Video uploaded successfully!')
+            return redirect('teacher:index')
+    else:
+        form = VideoUploadForm()
+    return render(request, 'teacher/upload_video.html', {'form': form})

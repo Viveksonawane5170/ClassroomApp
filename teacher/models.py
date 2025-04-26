@@ -26,3 +26,14 @@ class Teacher(AbstractUser):
     
     def __str__(self):
         return self.username
+    
+class Video(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    video_file = models.FileField(upload_to='videos/')
+    thumbnail = models.ImageField(upload_to='thumbnails/', blank=True)
+    upload_date = models.DateTimeField(auto_now_add=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.title

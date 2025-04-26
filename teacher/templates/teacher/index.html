@@ -1,3 +1,4 @@
+<!-- teacher/templates/teacher/index.html -->
 {% extends 'teacher/base.html' %}
 
 {% block title %}Home{% endblock %}
@@ -6,6 +7,27 @@
     <h1>Welcome to Classroom AI</h1>
     {% if user.is_authenticated %}
         <p>Hello, {{ user.first_name }} {{ user.last_name }}! You're logged in as a teacher.</p>
+        <a href="{% url 'teacher:upload' %}" class="btn btn-primary mb-3">Upload New Video</a>
+        
+        <h3>Your Uploaded Videos</h3>
+        <div class="row">
+            {% for video in videos %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if video.thumbnail %}
+                    <img src="{{ video.thumbnail.url }}" class="card-img-top" alt="{{ video.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ video.title }}</h5>
+                        <p class="card-text">{{ video.description|truncatechars:100 }}</p>
+                        <a href="{% url 'student:view_video' video.id %}" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No videos uploaded yet.</p>
+            {% endfor %}
+        </div>
     {% else %}
         <p>Please sign in or sign up to access the teacher dashboard.</p>
     {% endif %}

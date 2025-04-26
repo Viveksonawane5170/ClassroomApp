@@ -1,3 +1,4 @@
+<!-- student/templates/student/index.html -->
 {% extends 'student/base.html' %}
 
 {% block title %}Student Home{% endblock %}
@@ -8,6 +9,27 @@
         <p>Hello, {{ user.first_name }}! You're logged in as a student.</p>
         <p>Student ID: {{ user.student_id }}</p>
         <p>Grade Level: {{ user.grade_level }}</p>
+        
+        <h3>Available Videos</h3>
+        <div class="row">
+            {% for video in videos %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if video.thumbnail %}
+                    <img src="{{ video.thumbnail.url }}" class="card-img-top" alt="{{ video.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ video.title }}</h5>
+                        <p class="card-text">{{ video.description|truncatechars:100 }}</p>
+                        <p class="card-text"><small class="text-muted">By {{ video.teacher.get_full_name }}</small></p>
+                        <a href="{% url 'student:view_video' video.id %}" class="btn btn-primary">Watch Video</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No videos available yet.</p>
+            {% endfor %}
+        </div>
     {% else %}
         <p>Please sign in or sign up to access the student dashboard.</p>
     {% endif %}

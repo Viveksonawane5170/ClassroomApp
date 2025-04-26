@@ -14,3 +14,12 @@ class TeacherSignInForm(AuthenticationForm):
     class Meta:
         model = Teacher
         fields = ('username', 'password')
+
+# teacher/forms.py
+from django import forms
+from .models import Video
+
+class VideoUploadForm(forms.ModelForm):
+    class Meta:
+        model = Video
+        fields = ['title', 'description', 'video_file', 'thumbnail']

@@ -4,8 +4,16 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .forms import StudentSignUpForm, StudentSignInForm
 
+# student/views.py
+from teacher.models import Video
+
 def index(request):
-    return render(request, 'student/index.html')
+    videos = Video.objects.all() if request.user.is_authenticated else None
+    return render(request, 'student/index.html', {'videos': videos})
+
+def view_video(request, video_id):
+    video = Video.objects.get(id=video_id)
+    return render(request, 'student/view_video.html', {'video': video})
 
 def signup(request):
     if request.method == 'POST':
