@@ -51,3 +51,53 @@ def signout(request):
     logout(request)
     messages.info(request, "You have successfully logged out.") 
     return redirect('student:index')
+
+
+# Add at the top
+from teacher.models import Video
+from django.http import JsonResponse
+from dgvideo import transcribe_with_deepgram, extract_audio
+import tempfile
+import os
+
+def get_transcript(request, video_id):
+    if request.method == 'POST':
+        try:
+            video = Video.objects.get(id=video_id)
+            
+            # Create temp file for audio extraction
+            with tempfile.NamedTemporaryFile(delete=False) as temp_video:
+                for chunk in video.video_file.chunks():
+                    temp_video.write(chunk)
+                temp_video_path = temp_video.name
+
+            # Extract audio
+            audio_file = extract_audio(temp_video_path)
+            
+            # Transcribe
+            transcript = transcribe_with_deepgram(audio_file)
+            
+            # Cleanup
+            os.unlink(temp_video_path)
+            if audio_file and os.path.exists(audio_file):
+                os.unlink(audio_file)
+
+            return JsonResponse({'transcript': transcript})
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+# Add at the top
+from lamma import generate_summary
+
+def get_summary(request, video_id):
+    if request.method == 'POST':
+        transcript = request.POST.get('transcript', '')
+        if transcript:
+            summary = generate_summary(transcript)
+            return JsonResponse({'summary': summary})
+        return JsonResponse({'error': 'No transcript provided'}, status=400)
+    return JsonResponse({'error': 'Invalid request'}, status=400)

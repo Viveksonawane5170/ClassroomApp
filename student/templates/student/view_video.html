@@ -19,6 +19,126 @@
         <h3>Description</h3>
         <p>{{ video.description }}</p>
     </div>
+
+
+    <div class="mt-3">
+        <button id="transcript-btn" class="btn btn-primary mb-3">
+            Get Transcript
+        </button>
+        <button id="summary-btn" class="btn btn-success mb-3" disabled>
+            Get Summary
+        </button>
+        
+        <div id="loading" class="d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        
+        <div id="transcript-container" class="card d-none">
+            <div class="card-body">
+                <h3 class="card-title">Video Transcript</h3>
+                <div id="transcript-content"></div>
+            </div>
+        </div>
+    
+        <div id="summary-container" class="card d-none mt-3">
+            <div class="card-body">
+                <h3 class="card-title">Lecture Summary</h3>
+                <div id="summary-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.getElementById('transcript-btn').addEventListener('click', function() {
+        const btn = this;
+        const loading = document.getElementById('loading');
+        const container = document.getElementById('transcript-container');
+        const content = document.getElementById('transcript-content');
+        
+        btn.disabled = true;
+        loading.classList.remove('d-none');
+        
+        fetch("{% url 'student:get_transcript' video.id %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.transcript) {
+                content.textContent = data.transcript;
+                container.classList.remove('d-none');
+            } else if (data.error) {
+                alert('Error: ' + data.error);
+            }
+        })
+        .catch(error => {
+            alert('An error occurred: ' + error);
+        })
+        .finally(() => {
+            btn.disabled = false;
+            loading.classList.add('d-none');
+        });
+    });
+
+    // Summary functionality
+document.getElementById('summary-btn').addEventListener('click', function() {
+    const btn = this;
+    const loading = document.getElementById('loading');
+    const container = document.getElementById('summary-container');
+    const content = document.getElementById('summary-content');
+    const transcript = document.getElementById('transcript-content').textContent;
+
+    btn.disabled = true;
+    loading.classList.remove('d-none');
+
+    fetch("{% url 'student:get_summary' video.id %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `transcript=${encodeURIComponent(transcript)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.summary) {
+            content.innerHTML = data.summary.replace(/\n/g, '<br>');
+            container.classList.remove('d-none');
+        } else if (data.error) {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('An error occurred: ' + error);
+    })
+    .finally(() => {
+        btn.disabled = false;
+        loading.classList.add('d-none');
+    });
+});
+
+// Enable summary button when transcript is loaded
+document.getElementById('transcript-btn').addEventListener('click', function() {
+    document.getElementById('summary-btn').disabled = false;
+});
+</script>
+
+    <style>
+        #transcript-container, #summary-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
+    
     
     <a href="{% url 'student:index' %}" class="btn btn-secondary">Back to Videos</a>
 {% endblock %}
