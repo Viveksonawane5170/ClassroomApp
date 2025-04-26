@@ -1,0 +1,33 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+<div class="hero bg-light p-5 mb-4">
+    <div class="container text-center">
+        <h1>Welcome to Classroom AI</h1>
+        <p class="lead">Your intelligent education platform</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h2>Teacher Portal</h2>
+                    <a href="{% url 'teacher:signin' %}" class="btn btn-primary">Sign In</a>
+                    <a href="{% url 'teacher:signup' %}" class="btn btn-outline-secondary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h2>Student Portal</h2>
+                    <a href="{% url 'student:signin' %}" class="btn btn-primary">Sign In</a>
+                    <a href="{% url 'student:signup' %}" class="btn btn-outline-secondary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

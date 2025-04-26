@@ -1,0 +1,14 @@
+{% extends 'student/base.html' %}
+
+{% block title %}Student Home{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Classroom AI - Student Portal</h1>
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.first_name }}! You're logged in as a student.</p>
+        <p>Student ID: {{ user.student_id }}</p>
+        <p>Grade Level: {{ user.grade_level }}</p>
+    {% else %}
+        <p>Please sign in or sign up to access the student dashboard.</p>
+    {% endif %}
+{% endblock %}

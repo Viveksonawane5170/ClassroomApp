@@ -1,0 +1,12 @@
+{% extends 'teacher/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Classroom AI</h1>
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.first_name }} {{ user.last_name }}! You're logged in as a teacher.</p>
+    {% else %}
+        <p>Please sign in or sign up to access the teacher dashboard.</p>
+    {% endif %}
+{% endblock %}
