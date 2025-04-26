@@ -71,3 +71,28 @@ def upload_video(request):
     else:
         form = VideoUploadForm()
     return render(request, 'teacher/upload_video.html', {'form': form})
+
+# teacher/views.py
+from student.models import Student  # Add this import at the top
+
+# Add this new view function
+# teacher/views.py
+
+def student_list(request):
+    if not request.user.is_authenticated:
+        return redirect('teacher:signin')
+    
+    students = Student.objects.all()
+    return render(request, 'teacher/student_list.html', {'students': students})
+
+def index(request):
+    if not request.user.is_authenticated:
+        return redirect('teacher:signin')
+    
+    videos = Video.objects.filter(teacher=request.user)
+    students_count = Student.objects.count()  # Add this line
+    return render(request, 'teacher/index.html', {
+        'videos': videos,
+        'students_count': students_count  # Add this line
+    })
+
