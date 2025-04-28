@@ -1,33 +1,215 @@
 {% extends 'home/base.html' %}
 
-{% block content %}
-<div class="hero bg-light p-5 mb-4">
-    <div class="container text-center">
-        <h1>Welcome to Classroom AI</h1>
-        <p class="lead">Your intelligent education platform</p>
-    </div>
-</div>
+{% block title %}Home{% endblock %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <h2>Teacher Portal</h2>
-                    <a href="{% url 'teacher:signin' %}" class="btn btn-primary">Sign In</a>
-                    <a href="{% url 'teacher:signup' %}" class="btn btn-outline-secondary">Sign Up</a>
+{% block content %}
+<section class="relative pt-20 pb-24 bg-gradient-to-br from-[var(--purple-lighter)] to-white overflow-hidden">
+    <!-- Animated background shapes -->
+    <div class="absolute top-20 left-10 w-64 h-64 rounded-full bg-[var(--purple-light)] filter blur-3xl opacity-20 animate-pulse"></div>
+    <div class="absolute bottom-10 right-20 w-80 h-80 rounded-full bg-[var(--purple-medium)] filter blur-3xl opacity-10 animate-pulse" style="animation-delay: 1s;"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 relative">
+        <div class="flex flex-wrap items-center -mx-4">
+            <div class="w-full lg:w-1/2 px-4 mb-12 lg:mb-0" data-aos="fade-right">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-[var(--purple-dark)]">
+                    Your Intelligent
+                    <span class="text-[var(--purple-medium)]">Classroom Assistant</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
+                    AI-powered tools to capture important classroom information, track assignments, and improve student engagement.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <a href="#features" class="purple-gradient-dark text-white px-8 py-3 rounded-lg btn-effect shadow-lg transform hover:scale-105">
+                        <span class="iconify inline-block mr-2" data-icon="heroicons-outline:sparkles"></span>
+                        Learn More
+                    </a>
+                    <a href="#how-it-works" class="border-2 border-[var(--purple-medium)] text-[var(--purple-medium)] hover:text-white px-8 py-3 rounded-lg btn-effect relative overflow-hidden hover:bg-[var(--purple-medium)] shadow-lg transform hover:scale-105">
+                        <span class="iconify inline-block mr-2" data-icon="heroicons-outline:light-bulb"></span>
+                        How It Works
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <h2>Student Portal</h2>
-                    <a href="{% url 'student:signin' %}" class="btn btn-primary">Sign In</a>
-                    <a href="{% url 'student:signup' %}" class="btn btn-outline-secondary">Sign Up</a>
+            <div class="w-full lg:w-1/2 px-4" data-aos="fade-left" data-aos-delay="200">
+                <div class="relative purple-gradient-main rounded-2xl p-1 shadow-xl overflow-hidden">
+                    <div class="bg-white rounded-2xl overflow-hidden card-float">
+                        <img src="/api/placeholder/600/400" alt="Classroom AI Illustration" class="w-full h-auto rounded-2xl">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-[var(--purple-medium)] via-transparent to-transparent opacity-20"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<section id="features" class="py-20 purple-gradient-light relative overflow-hidden">
+    <div class="absolute -top-10 -left-10 w-40 h-40 bg-white rounded-full opacity-30"></div>
+    <div class="absolute bottom-0 right-0 w-60 h-60 bg-[var(--purple-light)] rounded-full opacity-20"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 relative">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 text-[var(--purple-dark)]" data-aos="fade-up">
+            <span class="iconify inline-block mr-2" data-icon="heroicons-outline:puzzle"></span>
+            Key Features
+        </h2>
+        <p class="text-center text-lg max-w-3xl mx-auto mb-16 text-gray-600" data-aos="fade-up" data-aos-delay="100">
+            Our platform seamlessly integrates with your classroom environment to enhance the learning experience.
+        </p>
+        <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+            <!-- Feature 1 -->
+            <div class="p-6 md:p-8 bg-white rounded-xl shadow-md transition-all duration-500 card-float" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 purple-gradient-main rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg">
+                    <span class="iconify w-8 h-8 text-white" data-icon="heroicons-outline:microphone"></span>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-center text-[var(--purple-dark)]">Real-time Speech Analysis</h3>
+                <p class="text-gray-600 text-center">Automatically captures and processes lectures, focusing only on relevant educational content.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="p-6 md:p-8 bg-white rounded-xl shadow-md transition-all duration-500 card-float" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-16 h-16 purple-gradient-main rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg">
+                    <span class="iconify w-8 h-8 text-white" data-icon="heroicons-outline:calendar"></span>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-center text-[var(--purple-dark)]">Automatic Assignment Tracking</h3>
+                <p class="text-gray-600 text-center">Detects homework mentions and deadlines, adding them to students' calendars with timely reminders.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="p-6 md:p-8 bg-white rounded-xl shadow-md transition-all duration-500 card-float" data-aos="fade-up" data-aos-delay="400">
+                <div class="w-16 h-16 purple-gradient-main rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg">
+                    <span class="iconify w-8 h-8 text-white" data-icon="heroicons-outline:chart-bar"></span>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-center text-[var(--purple-dark)]">Enhanced Learning Outcomes</h3>
+                <p class="text-gray-600 text-center">Improves academic performance by ensuring students never miss critical information and deadlines.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="how-it-works" class="py-20 bg-white relative overflow-hidden">
+    <div class="absolute top-40 right-0 w-72 h-72 bg-[var(--purple-lighter)] rounded-full opacity-30 filter blur-xl"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 relative">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 text-[var(--purple-dark)]" data-aos="fade-up">
+            <span class="iconify inline-block mr-2" data-icon="heroicons-outline:light-bulb"></span>
+            How It Works
+        </h2>
+        <p class="text-center text-lg max-w-3xl mx-auto mb-16 text-gray-600" data-aos="fade-up" data-aos-delay="100">
+            Our intuitive platform simplifies classroom information management in just a few steps.
+        </p>
+        
+        <div class="max-w-3xl mx-auto space-y-6 md:space-y-0" data-aos="fade-up" data-aos-delay="200">
+            <!-- Step progress bar -->
+            <div class="hidden md:block w-full h-1 bg-gray-200 relative mb-12">
+                <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[var(--purple-dark)] to-[var(--purple-medium)]"></div>
+                <div class="absolute top-0 left-1/8 -translate-x-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full purple-gradient-main shadow-lg z-10"></div>
+                <div class="absolute top-0 left-3/8 -translate-x-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full purple-gradient-main shadow-lg z-10"></div>
+                <div class="absolute top-0 left-5/8 -translate-x-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full purple-gradient-main shadow-lg z-10"></div>
+                <div class="absolute top-0 left-7/8 -translate-x-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full purple-gradient-main shadow-lg z-10"></div>
+            </div>
+            
+            <!-- Steps container -->
+            <div class="grid md:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="p-6 bg-[var(--purple-lighter)] rounded-xl transition-all duration-300 hover:bg-white hover:shadow-lg hover-grow" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex-shrink-0 w-12 h-12 purple-gradient-main text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto md:mx-auto mb-4 shadow-md">1</div>
+                    <h4 class="text-xl font-semibold mb-2 text-[var(--purple-dark)] text-center">Teacher speaks during class</h4>
+                    <p class="text-gray-600 text-center">Our AI listens to the teacher's lecture, processing the information in real-time.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="p-6 bg-[var(--purple-lighter)] rounded-xl transition-all duration-300 hover:bg-white hover:shadow-lg hover-grow" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex-shrink-0 w-12 h-12 purple-gradient-main text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto md:mx-auto mb-4 shadow-md">2</div>
+                    <h4 class="text-xl font-semibold mb-2 text-[var(--purple-dark)] text-center">AI detects important information</h4>
+                    <p class="text-gray-600 text-center">The system identifies homework assignments, project deadlines, and key learning points.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="p-6 bg-[var(--purple-lighter)] rounded-xl transition-all duration-300 hover:bg-white hover:shadow-lg hover-grow" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex-shrink-0 w-12 h-12 purple-gradient-main text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto md:mx-auto mb-4 shadow-md">3</div>
+                    <h4 class="text-xl font-semibold mb-2 text-[var(--purple-dark)] text-center">Information is organized</h4>
+                    <p class="text-gray-600 text-center">Assignments and deadlines are added to student calendars with appropriate reminders.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="p-6 bg-[var(--purple-lighter)] rounded-xl transition-all duration-300 hover:bg-white hover:shadow-lg hover-grow" data-aos="fade-up" data-aos-delay="400">
+                    <div class="flex-shrink-0 w-12 h-12 purple-gradient-main text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto md:mx-auto mb-4 shadow-md">4</div>
+                    <h4 class="text-xl font-semibold mb-2 text-[var(--purple-dark)] text-center">Students stay on track</h4>
+                    <p class="text-gray-600 text-center">Students receive reminders about upcoming deadlines and never miss important information.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-gradient-to-br from-[var(--purple-light)] to-white relative overflow-hidden">
+    <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-[var(--purple-medium)] rounded-full opacity-10 filter blur-xl"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 relative">
+        <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--purple-dark)] mb-4">
+                <span class="iconify inline-block mr-2" data-icon="heroicons-outline:rocket"></span>
+                Ready to transform your classroom?
+            </h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Join thousands of teachers and students already using ClassroomAI to enhance their educational experience.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg transition-all duration-500 card-float" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-16 h-16 purple-gradient-main rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg">
+                    <span class="iconify w-8 h-8 text-white" data-icon="heroicons-outline:academic-cap"></span>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--purple-dark)] mb-4 text-center">Teacher Portal</h3>
+                <p class="text-gray-600 mb-6 text-center">Create classes, monitor student progress, and enhance your teaching with AI assistance.</p>
+                <div class="space-y-4">
+                    <a href="{% url 'teacher:signin' %}" class="block w-full purple-gradient-dark text-white py-3 rounded-lg transition-all duration-300 btn-effect shadow-lg text-center">
+                        <span class="iconify inline-block mr-2" data-icon="heroicons-outline:login"></span>
+                        Sign In
+                    </a>
+                    <a href="{% url 'teacher:signup' %}" class="block w-full border-2 border-[var(--purple-medium)] text-[var(--purple-medium)] py-3 rounded-lg hover:bg-[var(--purple-medium)] hover:text-white transition-colors duration-300 text-center">
+                        <span class="iconify inline-block mr-2" data-icon="heroicons-outline:user-add"></span>
+                        Create Account
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg transition-all duration-500 card-float" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 purple-gradient-main rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg">
+                    <span class="iconify w-8 h-8 text-white" data-icon="heroicons-outline:user"></span>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--purple-dark)] mb-4 text-center">Student Portal</h3>
+                <p class="text-gray-600 mb-6 text-center">Access class materials, track assignments, and never miss important deadlines.</p>
+                <div class="space-y-4">
+                    <a href="{% url 'student:signin' %}" class="block w-full purple-gradient-dark text-white py-3 rounded-lg transition-all duration-300 btn-effect shadow-lg text-center">
+                        <span class="iconify inline-block mr-2" data-icon="heroicons-outline:login"></span>
+                        Sign In
+                    </a>
+                    <a href="{% url 'student:signup' %}" class="block w-full border-2 border-[var(--purple-medium)] text-[var(--purple-medium)] py-3 rounded-lg hover:bg-[var(--purple-medium)] hover:text-white transition-colors duration-300 text-center">
+                        <span class="iconify inline-block mr-2" data-icon="heroicons-outline:user-add"></span>
+                        Create Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 bg-white" data-aos="fade-up">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="bg-gradient-to-r from-[var(--purple-dark)] to-[var(--purple-medium)] rounded-2xl p-12 text-center text-white shadow-xl">
+            <h2 class="text-3xl font-bold mb-6">Start Your AI-Powered Classroom Journey Today</h2>
+            <p class="text-lg mb-8 max-w-2xl mx-auto">
+                Join our growing community of educators and students using AI to transform the classroom experience. Get started in minutes!
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <a href="{% url 'teacher:signup' %}" class="w-full sm:w-auto bg-white text-[var(--purple-dark)] px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-300 shadow-lg">
+                    <span class="iconify inline-block mr-2" data-icon="heroicons-outline:academic-cap"></span>
+                    Join as Teacher
+                </a>
+                <a href="{% url 'student:signup' %}" class="w-full sm:w-auto bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-[var(--purple-dark)] transition-all duration-300">
+                    <span class="iconify inline-block mr-2" data-icon="heroicons-outline:user"></span>
+                    Join as Student
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

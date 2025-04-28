@@ -1,22 +1,257 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classroom AI - {% block title %}{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.x/dist/typography.min.css" />
+    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- AOS Library for scroll animations -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Iconify for Tailwind-compatible icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iconify/2.2.1/iconify.min.js"></script>
+    <style>
+        :root {
+            /* Create a cohesive gradient-friendly palette */
+            --purple-dark: #250c5f;
+            --purple-medium: #591ce1;
+            --purple-main: #7846e8;
+            --purple-light: #d7c8f8;
+            --purple-lighter: #f3eeff;
+            --purple-lightest: #f9f6ff;
+        }
+        
+        /* Custom smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Gradient backgrounds */
+        .purple-gradient-main {
+            background: linear-gradient(135deg, var(--purple-medium) 0%, var(--purple-main) 100%);
+        }
+        
+        .purple-gradient-light {
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple-lighter) 100%);
+        }
+        
+        .purple-gradient-dark {
+            background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-medium) 100%);
+        }
+        
+        /* Advanced hover effects */
+        .hover-grow {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .hover-grow:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(116, 70, 232, 0.2);
+        }
+        
+        .hover-glow {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-glow:hover {
+            box-shadow: 0 0 15px rgba(116, 70, 232, 0.5);
+        }
+        
+        /* Button effects */
+        .btn-effect {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .btn-effect:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .btn-effect:hover:before {
+            left: 100%;
+        }
+        
+        /* Card animations */
+        .card-float {
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .card-float:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(89, 28, 225, 0.15);
+        }
+        
+        /* Responsive menu */
+        .mobile-menu {
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .mobile-menu.active {
+            max-height: 200px;
+        }
+        
+        /* Footer hover effects */
+        .footer-link {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--purple-light);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-link:hover:after {
+            width: 100%;
+        }
+    </style>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('active');
+        }
+        
+        // Initialize AOS on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: false,
+                mirror: true
+            });
+        });
+    </script>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home:index' %}">Classroom AI</a>
-            <div class="navbar-nav">
-                <a class="nav-link" href="{% url 'teacher:signin' %}">Teacher Login</a>
-                <a class="nav-link" href="{% url 'student:signin' %}">Student Login</a>
+<body class="bg-gradient-to-br from-[var(--purple-lightest)] to-white">
+    <nav class="purple-gradient-main shadow-lg text-white sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="{% url 'home:index' %}" class="flex items-center hover-glow rounded-lg p-1">
+                    <span class="text-2xl font-bold text-white">Classroom<span class="text-[var(--purple-light)]">AI</span></span>
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="{% url 'teacher:signin' %}" class="text-white hover:text-[var(--purple-light)] transition-colors duration-300 font-medium footer-link">
+                        <span class="iconify mr-1" data-icon="heroicons-outline:academic-cap"></span>
+                        Teacher Login
+                    </a>
+                    <a href="{% url 'student:signin' %}" class="text-white hover:text-[var(--purple-light)] transition-colors duration-300 font-medium footer-link">
+                        <span class="iconify mr-1" data-icon="heroicons-outline:user"></span>
+                        Student Login
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button onclick="toggleMenu()" type="button" class="text-white focus:outline-none hover-glow p-1 rounded-lg">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden pb-0">
+                <a href="{% url 'teacher:signin' %}" class="block py-2 px-4 text-white hover:bg-[var(--purple-dark)] rounded transition-colors duration-300 my-1">
+                    <span class="iconify mr-1" data-icon="heroicons-outline:academic-cap"></span>
+                    Teacher Login
+                </a>
+                <a href="{% url 'student:signin' %}" class="block py-2 px-4 text-white hover:bg-[var(--purple-dark)] rounded transition-colors duration-300 my-1">
+                    <span class="iconify mr-1" data-icon="heroicons-outline:user"></span>
+                    Student Login
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <main class="overflow-hidden">
         {% block content %}{% endblock %}
-    </div>
+    </main>
+
+    <footer class="purple-gradient-main text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Logo & About -->
+                <div class="flex flex-col items-center md:items-start">
+                    <a href="{% url 'home:index' %}" class="flex items-center mb-4 hover-glow p-1 rounded">
+                        <span class="text-2xl font-bold">Classroom<span class="text-[var(--purple-light)]">AI</span></span>
+                    </a>
+                    <p class="text-sm opacity-90 mb-4 text-center md:text-left">Enhancing education with AI technology. Making classroom information accessible and organized for better learning outcomes.</p>
+                    <div class="flex space-x-4 mt-2">
+                        <a href="#" class="hover-glow p-2 rounded-full">
+                            <span class="iconify w-5 h-5" data-icon="heroicons-outline:mail"></span>
+                        </a>
+                        <a href="#" class="hover-glow p-2 rounded-full">
+                            <span class="iconify w-5 h-5" data-icon="heroicons-outline:globe"></span>
+                        </a>
+                        <a href="#" class="hover-glow p-2 rounded-full">
+                            <span class="iconify w-5 h-5" data-icon="heroicons-outline:phone"></span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="text-center md:text-left">
+                    <h3 class="text-lg font-semibold mb-4 border-b border-[var(--purple-light)] pb-2">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="footer-link">Features</a></li>
+                        <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+                        <li><a href="{% url 'teacher:signin' %}" class="footer-link">Teacher Portal</a></li>
+                        <li><a href="{% url 'student:signin' %}" class="footer-link">Student Portal</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact & Support -->
+                <div class="text-center md:text-left">
+                    <h3 class="text-lg font-semibold mb-4 border-b border-[var(--purple-light)] pb-2">Support</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center justify-center md:justify-start">
+                            <span class="iconify mr-2" data-icon="heroicons-outline:mail"></span>
+                            <span>support@classroomai.com</span>
+                        </li>
+                        <li class="flex items-center justify-center md:justify-start">
+                            <span class="iconify mr-2" data-icon="heroicons-outline:phone"></span>
+                            <span>(555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center justify-center md:justify-start">
+                            <span class="iconify mr-2" data-icon="heroicons-outline:location-marker"></span>
+                            <span>123 Education St, Tech City</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-[var(--purple-light)] mt-8 pt-6 text-center opacity-80">
+                <p>© 2025 ClassroomAI - All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to top button -->
+    <a href="#" class="fixed bottom-8 right-8 purple-gradient-main rounded-full p-3 shadow-lg opacity-0 hover:opacity-100 transition-opacity duration-300 hover:shadow-xl">
+        <span class="iconify w-6 h-6 text-white" data-icon="heroicons-outline:arrow-up"></span>
+    </a>
 </body>
 </html>
