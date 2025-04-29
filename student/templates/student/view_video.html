@@ -28,6 +28,10 @@
         <button id="summary-btn" class="btn btn-success mb-3" disabled>
             Get Summary
         </button>
+
+        <button id="questions-btn" class="btn btn-info mb-3" disabled>
+            Generate Questions
+        </button>
         
         <div id="loading" class="d-none">
             <div class="spinner-border text-primary" role="status">
@@ -48,6 +52,14 @@
                 <div id="summary-content"></div>
             </div>
         </div>
+
+        <div id="questions-container" class="card d-none mt-3">
+            <div class="card-body">
+                <h3 class="card-title">Study Questions</h3>
+                <div id="questions-content"></div>
+            </div>
+        </div>
+        
     </div>
     
     <script>
@@ -125,6 +137,47 @@ document.getElementById('summary-btn').addEventListener('click', function() {
 // Enable summary button when transcript is loaded
 document.getElementById('transcript-btn').addEventListener('click', function() {
     document.getElementById('summary-btn').disabled = false;
+});
+
+document.getElementById('questions-btn').addEventListener('click', function() {
+    const btn = this;
+    const loading = document.getElementById('loading');
+    const container = document.getElementById('questions-container');
+    const content = document.getElementById('questions-content');
+    const summary = document.getElementById('summary-content').textContent;
+
+    btn.disabled = true;
+    loading.classList.remove('d-none');
+
+    fetch("{% url 'student:get_questions' video.id %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `summary=${encodeURIComponent(summary)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.questions) {
+            content.innerHTML = data.questions.replace(/\n/g, '<br>');
+            container.classList.remove('d-none');
+        } else if (data.error) {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('An error occurred: ' + error);
+    })
+    .finally(() => {
+        btn.disabled = false;
+        loading.classList.add('d-none');
+    });
+});
+
+// Enable questions button when summary is loaded
+document.getElementById('summary-btn').addEventListener('click', function() {
+    document.getElementById('questions-btn').disabled = false;
 });
 </script>
 

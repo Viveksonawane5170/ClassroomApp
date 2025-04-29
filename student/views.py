@@ -101,3 +101,16 @@ def get_summary(request, video_id):
             return JsonResponse({'summary': summary})
         return JsonResponse({'error': 'No transcript provided'}, status=400)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+# student/views.py (add this at the bottom)
+from lamma import generate_questions
+
+def get_questions(request, video_id):
+    if request.method == 'POST':
+        summary = request.POST.get('summary', '')
+        if summary:
+            questions = generate_questions(summary)
+            return JsonResponse({'questions': questions})
+        return JsonResponse({'error': 'No summary provided'}, status=400)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
