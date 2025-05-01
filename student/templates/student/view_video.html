@@ -32,6 +32,14 @@
         <button id="questions-btn" class="btn btn-info mb-3" disabled>
             Generate Questions
         </button>
+
+        <button id="notes-btn" class="btn btn-warning mb-3" disabled>
+            Generate Notes
+        </button>
+        
+        <button id="download-notes-btn" class="btn btn-secondary mb-3" disabled>
+            Download Notes
+        </button>
         
         <div id="loading" class="d-none">
             <div class="spinner-border text-primary" role="status">
@@ -57,6 +65,13 @@
             <div class="card-body">
                 <h3 class="card-title">Study Questions</h3>
                 <div id="questions-content"></div>
+            </div>
+        </div>
+
+        <div id="notes-container" class="card d-none mt-3">
+            <div class="card-body">
+                <h3 class="card-title">Study Notes</h3>
+                <div id="notes-content"></div>
             </div>
         </div>
         
@@ -179,6 +194,88 @@ document.getElementById('questions-btn').addEventListener('click', function() {
 document.getElementById('summary-btn').addEventListener('click', function() {
     document.getElementById('questions-btn').disabled = false;
 });
+
+// Notes functionality
+document.getElementById('notes-btn').addEventListener('click', function() {
+    const btn = this;
+    const loading = document.getElementById('loading');
+    const container = document.getElementById('notes-container');
+    const content = document.getElementById('notes-content');
+    const transcript = document.getElementById('transcript-content').textContent;
+
+    btn.disabled = true;
+    loading.classList.remove('d-none');
+
+    fetch("{% url 'student:get_notes' video.id %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `transcript=${encodeURIComponent(transcript)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.notes) {
+            content.innerHTML = data.notes.replace(/\n/g, '<br>');
+            container.classList.remove('d-none');
+            document.getElementById('download-notes-btn').disabled = false;
+        } else if (data.error) {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('An error occurred: ' + error);
+    })
+    .finally(() => {
+        btn.disabled = false;
+        loading.classList.add('d-none');
+    });
+});
+
+// Download notes functionality
+document.getElementById('download-notes-btn').addEventListener('click', function() {
+    const btn = this;
+    const loading = document.getElementById('loading');
+    const notesContent = document.getElementById('notes-content').textContent;
+
+    btn.disabled = true;
+    loading.classList.remove('d-none');
+
+    // Create a form dynamically
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = "{% url 'student:download_notes' video.id %}";
+    
+    // Add CSRF token
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = 'csrfmiddlewaretoken';
+    csrfInput.value = '{{ csrf_token }}';
+    form.appendChild(csrfInput);
+    
+    // Add notes content
+    const notesInput = document.createElement('input');
+    notesInput.type = 'hidden';
+    notesInput.name = 'notes';
+    notesInput.value = notesContent;
+    form.appendChild(notesInput);
+    
+    // Submit the form
+    document.body.appendChild(form);
+    form.submit();
+    
+    // Clean up
+    document.body.removeChild(form);
+    btn.disabled = false;
+    loading.classList.add('d-none');
+});
+
+// Enable notes button when transcript is loaded
+document.getElementById('transcript-btn').addEventListener('click', function() {
+    document.getElementById('notes-btn').disabled = false;
+});
+
 </script>
 
     <style>

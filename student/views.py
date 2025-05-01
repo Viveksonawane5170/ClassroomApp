@@ -114,3 +114,50 @@ def get_questions(request, video_id):
             return JsonResponse({'questions': questions})
         return JsonResponse({'error': 'No summary provided'}, status=400)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+# Add to student/views.py
+import os
+from django.http import HttpResponse
+from django.conf import settings
+
+def get_notes(request, video_id):
+    if request.method == 'POST':
+        transcript = request.POST.get('transcript', '')
+        if transcript:
+            from lamma import generate_notes
+            notes = generate_notes(transcript)
+            return JsonResponse({'notes': notes})
+        return JsonResponse({'error': 'No transcript provided'}, status=400)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def download_notes(request, video_id):
+    if request.method == 'POST':
+        try:
+            video = Video.objects.get(id=video_id)
+            notes_content = request.POST.get('notes', '')
+            
+            if not notes_content:
+                return JsonResponse({'error': 'No notes content to download'}, status=400)
+            
+            # Create a notes directory if it doesn't exist
+            notes_dir = os.path.join(settings.MEDIA_ROOT, 'notes')
+            os.makedirs(notes_dir, exist_ok=True)
+            
+            # Create filename based on video title
+            filename = f"notes_{video.title.replace(' ', '_')}_{video_id}.txt"
+            filepath = os.path.join(notes_dir, filename)
+            
+            # Save the notes to file
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(notes_content)
+            
+            # Create response for download
+            response = HttpResponse(notes_content, content_type='text/plain')
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            return response
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
